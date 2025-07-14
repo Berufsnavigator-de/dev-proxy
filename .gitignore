@@ -1,0 +1,3 @@
+# the certificates should never go to GitHub
+certs/*.key
+certs/*.pem
