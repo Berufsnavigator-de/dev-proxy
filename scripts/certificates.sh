@@ -8,7 +8,10 @@ if [ $# -ne 1 ]; then
 fi
 
 HOSTFILE="$1"
-CERTDIR="certs"
+CERTDIR="./certs"
+PEM_FILE=$CERTDIR/cert.pem
+KEY_FILE=$CERTDIR/cert.key
+FULLCHAIN_FILE=$CERTDIR/fullchain.pem
 
 if [ ! -f "$HOSTFILE" ]; then
     echo "File '$HOSTFILE' not found!"
@@ -34,13 +37,22 @@ if [ -z "$HOSTNAMES" ]; then
     exit 4
 fi
 
-# Run mkcert in a Podman container, mounting the certs directory
-podman run \
-    --rm -v "$(pwd)/$CERTDIR":/certs -w /certs \
-    docker.io/brunopadz/mkcert-docker \
-    mkcert -cert-file cert.pem -key-file cert.key $HOSTNAMES
+mkcert -install
+mkcert -cert-file "$PEM_FILE" -key-file "$KEY_FILE" $HOSTNAMES
+cat $PEM_FILE "$(mkcert -CAROOT)/rootCA.pem" > "$FULLCHAIN_FILE"
 
-# this give an error 403
+# podman doesn't work, because it would need the host's rootCA
+# I could probably inject the correct file into the container,
+# but to get the correct filename, I need mkcert -CAROOT,
+# and then I can create the certificates directly on the host
+# Alternative idea: Could I get the rootCA from the container?
+# Run mkcert in a Podman container, mounting the certs directory
+# podman run \
+#     --rm -v "$(pwd)/$CERTDIR":/certs -w /certs \
+#     docker.io/brunopadz/mkcert-docker \
+#     mkcert -cert-file cert.pem -key-file cert.key $HOSTNAMES
+
+# this gives an error 403
 # podman run \
 #     --log-level=debug \
 #     --rm -v "$(pwd)/$CERTDIR":/certs -w /certs \
