@@ -1,5 +1,5 @@
 #!/bin/sh
 
-set -e
+./create_config.sh ./hostnames.conf
 
-sh ./create_config.sh ../hostnames.conf
+exec nginx -g 'daemon off;'

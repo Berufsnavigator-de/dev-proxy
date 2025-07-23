@@ -6,18 +6,12 @@ server {
 	ssl_certificate_key /etc/nginx/certs/cert.key;
 
 	location / {
-		proxy_pass http://host.containers.internal:${FRONTEND_PORT}
-		proxy_set_header Host $host;
-		proxy_set_header X-Real-IP $remote_addr;
-		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-		proxy_set_header X-Forwarded-Proto $scheme
+		include ./conf.d/proxy_headers.conf;
+		proxy_pass http://host.containers.internal:${FRONTEND_PORT};
 	}
 
 	location /${BACKEND_URI} {
-		proxy_pass http://host.containers.internal:${BACKEND_PORT}
-		proxy_set_header Host $host;
-		proxy_set_header X-Real-IP $remote_addr;
-		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-		proxy_set_header X-Forwarded-Proto $scheme
+		include ./conf.d/proxy_headers.conf;
+		proxy_pass http://host.containers.internal:${BACKEND_PORT};
 	}
 }

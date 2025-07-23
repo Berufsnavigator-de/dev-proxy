@@ -1,0 +1,10 @@
+services:
+  dev-proxy:
+    build:
+      context: .
+    image: custom-nginx-proxy:latest
+    ports:
+      - "8443:443"
+    volumes:
+      - ./certs:/etc/nginx/certs:ro
+      - ./hostnames.conf:/etc/nginx/app-config/hostnames.conf:ro
