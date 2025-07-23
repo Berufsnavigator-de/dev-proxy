@@ -22,7 +22,7 @@ fi
 
 # Read hostnames into a single line
 HOSTNAMES=""
-while IFS= read -r name; do
+while read -r name rest; do
     case "$name" in
         ""|\#*) continue ;;
     esac
