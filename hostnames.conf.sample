@@ -1,2 +1,6 @@
-# hostname frontend_port backend_port backend_uri
-
+# hostname1:
+# 	location1.1: url1.1_for_proxy_pass
+# 	location1.2: url1.2_for_proxy_pass
+# hostname2:
+# 	location2.1: url2.1_for_proxy_pass
+# 	location2.2: url2.2_for_proxy_pass
