@@ -218,9 +218,3 @@ dev-proxy/
 2. **Configuration**: Use simple, readable formats (YAML)
 3. **Error handling**: Provide clear error messages and help
 4. **Documentation**: Update this README for any changes
-
-## License
-
-[Add your license information here]
-
-
