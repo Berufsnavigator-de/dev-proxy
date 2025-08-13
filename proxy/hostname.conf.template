@@ -2,16 +2,10 @@ server {
 	listen 443 ssl;
 	server_name ${HOSTNAME};
 
+	include ./conf.d/proxy_headers.conf;
+
 	ssl_certificate /etc/nginx/certs/cert.pem;
 	ssl_certificate_key /etc/nginx/certs/cert.key;
 
-	location / {
-		include ./conf.d/proxy_headers.conf;
-		proxy_pass http://host.containers.internal:${FRONTEND_PORT};
-	}
-
-	location /${BACKEND_URI} {
-		include ./conf.d/proxy_headers.conf;
-		proxy_pass http://host.containers.internal:${BACKEND_PORT};
-	}
+	${LOCATION_BLOCKS}
 }
